@@ -4,10 +4,7 @@ import rs.etf.sab.operations.*;
 import rs.etf.sab.student.operations.*;
 import rs.etf.sab.tests.TestHandler;
 import rs.etf.sab.tests.TestRunner;
-import rs.etf.sab.student.sql_helper.DB;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Main {
 
