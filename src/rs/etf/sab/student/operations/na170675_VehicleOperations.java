@@ -23,6 +23,7 @@ public class na170675_VehicleOperations implements VehicleOperations {
     public na170675_VehicleOperations() {
         mLogger.setLevel(Level.SEVERE);
     }
+
     @Override
     public boolean insertVehicle(String licencePlateNumber, int fuelType, BigDecimal fuelConsumption, BigDecimal capacity) {
         boolean retVal = false;
@@ -176,7 +177,20 @@ public class na170675_VehicleOperations implements VehicleOperations {
     }
 
     private boolean isVehicleInDrive(int idVehicle) {
-        return false;
+        boolean retVal = false;
+        try (
+                PreparedStatement ps1 = mConnection.prepareStatement("SELECT IdVehicle FROM VehicleInDrive WHERE IdVehicle = ?")
+        ) {
+            ps1.setInt(1, idVehicle);
+            try (
+                    ResultSet rs = ps1.executeQuery()) {
+                retVal = rs.next();
+            }
+        } catch (SQLException ex) {
+            mLogger.log(Level.WARNING, null, ex);
+        }
+
+        return retVal;
     }
 
     private int getVehicleId(String licencePlateNumber) {

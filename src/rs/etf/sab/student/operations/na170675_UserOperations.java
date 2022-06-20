@@ -120,8 +120,24 @@ public class na170675_UserOperations implements UserOperations {
         return retVal;
     }
 
-    private int getUserSentPackages(int userId) {
-        return 0;
+    private int getUserSentPackages(int idUser) {
+        int retVal = 0;
+        try (
+                PreparedStatement ps = mConnection.prepareStatement("SELECT * FROM RequestToDelivery WHERE idUser = ?")
+        ) {
+            ps.setInt(1, idUser);
+            try (
+                    ResultSet rs = ps.executeQuery()) {
+                int count = 0;
+                while (rs.next()) {
+                    count++;
+                }
+                retVal = count;
+            }
+        } catch (SQLException ex) {
+            mLogger.log(Level.WARNING, null, ex);
+        }
+        return retVal;
     }
 
     @Override
@@ -155,7 +171,7 @@ public class na170675_UserOperations implements UserOperations {
     public List<String> getAllUsers() {
         List<String> userList = new LinkedList<>();
         try (
-                PreparedStatement ps = mConnection.prepareStatement("SELECT username FROM PERSON")
+                PreparedStatement ps = mConnection.prepareStatement("SELECT username FROM Person")
         ) {
             try (
                     ResultSet rs = ps.executeQuery()) {

@@ -65,7 +65,7 @@ public class Util {
     }
 
     public static BigDecimal calculateDistance(int startX, int startY, int endX, int endY) {
-        return BigDecimal.valueOf(Math.sqrt(Math.pow(startX - endX, 2) + Math.pow(startY - endY, 2)));
+        return BigDecimal.valueOf(Math.sqrt(Math.pow((double) startX - endX, 2) + Math.pow((double) startY - endY, 2)));
     }
 
     public Pair<Integer, Integer> getCoordinates(int idAddress) {

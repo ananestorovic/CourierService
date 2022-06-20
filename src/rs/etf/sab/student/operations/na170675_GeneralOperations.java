@@ -30,6 +30,7 @@ public class na170675_GeneralOperations implements GeneralOperations {
 
         deleteAllPackagesWareHouse();
         deleteAllVehiclesInDrive();
+        deleteAllVehiclesWareHouse();
         deleteAllVehicles();
         deleteAllWareHouses();
 

@@ -16,6 +16,7 @@ public class na170675_StockroomOperations implements StockroomOperations {
     public na170675_StockroomOperations() {
         mLogger.setLevel(Level.SEVERE);
     }
+
     @Override
     public int insertStockroom(int idAddress) {
         int retVal = -1;
@@ -68,8 +69,47 @@ public class na170675_StockroomOperations implements StockroomOperations {
     }
 
     private boolean isEmpty(int idWareHouse) {
-        // TODO implement later
-        return true;
+        boolean haveSomething  = haveSomePackage(idWareHouse);
+        if (!haveSomething){
+            haveSomething = haveSomeVehicle(idWareHouse);
+        }
+        return !haveSomething;
+    }
+
+    private boolean haveSomePackage(int idWareHouse) {
+        boolean retVal = false;
+        try (
+                PreparedStatement ps = mConnection.prepareStatement("SELECT * FROM PackageInWareHouse WHERE idWareHouse = ?")
+        ) {
+            ps.setInt(1, idWareHouse);
+            try (
+                    ResultSet rs = ps.executeQuery();
+            ) {
+                retVal = rs.next();
+
+            }
+        } catch (SQLException ex) {
+            mLogger.log(Level.WARNING, null, ex);
+        }
+        return retVal;
+    }
+
+    private boolean haveSomeVehicle(int idWareHouse) {
+        boolean retVal = false;
+        try (
+                PreparedStatement ps = mConnection.prepareStatement("SELECT * FROM VehicleInWareHouse WHERE idWareHouse = ?")
+        ) {
+            ps.setInt(1, idWareHouse);
+            try (
+                    ResultSet rs = ps.executeQuery();
+            ) {
+                retVal = rs.next();
+
+            }
+        } catch (SQLException ex) {
+            mLogger.log(Level.WARNING, null, ex);
+        }
+        return retVal;
     }
 
     @Override

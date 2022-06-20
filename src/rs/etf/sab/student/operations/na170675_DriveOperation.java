@@ -339,17 +339,21 @@ public class na170675_DriveOperation implements DriveOperation {
 
     private List<Package> getAllNotTakenPackagesFromCity(int idCity) {
         List<Package> packages = new LinkedList<>();
-        try (PreparedStatement ps = mConnection.prepareStatement("" +
+        try (
+                PreparedStatement ps = mConnection.prepareStatement("" +
                 "SELECT  weight, RTD.idRequest, " +
                 " PickUp.xCoord, PickUp.yCoord, " +
                 " Delivery.xCoord, Delivery.yCoord, " +
                 " Delivery.idCity, Delivery.IdAddress, " +
                 " price, Package.idAddress" +
-                " FROM Package " + "INNER JOIN RequestToDelivery RTD on RTD.idRequest = Package.idRequest " + "INNER JOIN Address PickUp on PickUp.IdAddress = RTD.pickUpAdress " + "INNER JOIN Address Delivery on Delivery.IdAddress = RTD.deliveryAdress" + " WHERE deliveryStatus = ? AND PickUp.idCity = ? AND markForPickUp = ? " + " ORDER BY acceptanceTime")) {
+                " FROM Package " + "INNER JOIN RequestToDelivery RTD on RTD.idRequest = Package.idRequest " + "INNER JOIN Address PickUp on PickUp.IdAddress = RTD.pickUpAdress " + "INNER JOIN Address Delivery on Delivery.IdAddress = RTD.deliveryAdress" + " WHERE deliveryStatus = ? AND PickUp.idCity = ? AND markForPickUp = ? " + " ORDER BY acceptanceTime")
+        ) {
             ps.setInt(1, PackageStatus.ACCEPTED.ordinal());
             ps.setInt(2, idCity);
             ps.setInt(3, 0);
-            try (ResultSet rs = ps.executeQuery();) {
+            try (
+                    ResultSet rs = ps.executeQuery()
+            ) {
                 while (rs.next()) {
                     packages.add(new Package(rs));
                 }
@@ -780,10 +784,12 @@ public class na170675_DriveOperation implements DriveOperation {
                 price = rs.getBigDecimal(9);
                 wareHouseAddress = rs.getInt(10);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+
             }
 
         }
+
+
 
 
         @Override
@@ -792,8 +798,14 @@ public class na170675_DriveOperation implements DriveOperation {
                 return (Package) super.clone();
 
             } catch (CloneNotSupportedException e) {
-                throw new RuntimeException(e);
+               return new Package();
             }
+        }
+
+
+        @Override
+        public int hashCode() {
+            return this.idPackage;
         }
 
         @Override

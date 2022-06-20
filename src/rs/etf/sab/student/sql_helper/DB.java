@@ -14,10 +14,8 @@ import java.util.logging.Logger;
  * @author Tasha
  */
 public class DB {
-    private static final String username="courier_service_admin";
-//    private static final String username="sa";
+    private static final String username="sa";
     private static final String password="123";
-//    private static final String password="123";
     private static final String database="courier_service";
     private static final int port=1433;
     private static final String server="localhost";
